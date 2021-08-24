@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController { //spring bean, act as request receiver
-	
 	@Autowired  //DI
 	IUserService userService;
 	
