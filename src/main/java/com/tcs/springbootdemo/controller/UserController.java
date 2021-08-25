@@ -30,34 +30,34 @@ public class UserController { // spring bean, act as request receiver
 	IUserService userService;
 
 	@GetMapping
-	private Iterable<User> getUser() {
+	public Iterable<User> getUser() {
 		return userService.getAllUsers();
 	}
 
 	@GetMapping("/{id}")
-	private Optional<User> getUser(@PathVariable("id") Integer id) {
+	public Optional<User> getUser(@PathVariable("id") Integer id) {
 		return userService.getUser(id);
 	}
 
 	@ExceptionHandler(value = {UserNotFoundException.class,EmptyResultDataAccessException.class})
-	public ResponseEntity<User> exception(RuntimeException RuntimeException) {
-		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<User> exception(RuntimeException runtimeException) {
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@PostMapping
-	private void saveUser(@RequestBody User user) {
+	public void saveUser(@RequestBody User user) {
 		userService.save(user);
-		System.out.println(user.getFirstName());
+		logger.debug(user.getFirstName());
 	}
 
-	@PutMapping // METHOD+Path
-	private void updateUser(@RequestBody User user) {
+	@PutMapping() // METHOD+Path
+	public void updateUser(@RequestBody User user) {
 		userService.save(user);
-		logger.debug(user.getFirstName());;
+		logger.debug(user.getFirstName());
 	}
 	
 	@DeleteMapping("/{id}")
-	private void deleteUser(@PathVariable int id) {
+	public void deleteUser(@PathVariable int id) {
 		userService.deleteUser(id);
 	}
 }

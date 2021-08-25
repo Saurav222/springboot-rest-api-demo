@@ -2,6 +2,8 @@ package com.tcs.springbootdemo.service;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import com.tcs.springbootdemo.repository.IUserRepository;
 
 @Service
 public class UserService implements IUserService {
+	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
 	IUserRepository userRepository;
@@ -18,7 +21,7 @@ public class UserService implements IUserService {
 	@Override
 	public void save(User user) {
 		userRepository.save(user);
-		System.out.println("saved");
+		logger.debug("saved");
 	}
 
 	@Override
