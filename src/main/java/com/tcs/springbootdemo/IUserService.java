@@ -8,4 +8,6 @@ public interface IUserService {
 	Iterable<User> getAllUsers();
 
 	Optional<User> getUser(Integer id);
+
+	void deleteUser(int id);
 }
