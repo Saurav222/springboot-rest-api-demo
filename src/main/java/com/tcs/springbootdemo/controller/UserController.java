@@ -1,7 +1,8 @@
-package com.tcs.springbootdemo;
+package com.tcs.springbootdemo.controller;
 
 import java.util.Optional;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import com.tcs.springbootdemo.User;
+import com.tcs.springbootdemo.exceptions.UserNotFoundException;
+import com.tcs.springbootdemo.service.IUserService;
+
 @RestController
 @RequestMapping("/user")
 public class UserController { // spring bean, act as request receiver
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired // DI
 	IUserService userService;
 
@@ -46,7 +53,7 @@ public class UserController { // spring bean, act as request receiver
 	@PutMapping // METHOD+Path
 	private void updateUser(@RequestBody User user) {
 		userService.save(user);
-		System.out.println(user.getFirstName());
+		logger.debug(user.getFirstName());;
 	}
 	
 	@DeleteMapping("/{id}")
