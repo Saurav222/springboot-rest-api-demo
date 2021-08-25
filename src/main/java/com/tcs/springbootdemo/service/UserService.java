@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.tcs.springbootdemo.User;
 import com.tcs.springbootdemo.exceptions.UserNotFoundException;
 import com.tcs.springbootdemo.repository.IUserRepository;
+import org.springframework.util.StringUtils;
 
 @Service
 public class UserService implements IUserService {
@@ -43,4 +44,12 @@ public class UserService implements IUserService {
 		userRepository.deleteById(id);
 	}
 
+	@Override
+	public void update(User user, Integer id) {
+		Optional<User> userFromDB = userRepository.findById(id);
+		User user1 = userFromDB.get();
+		if (StringUtils.hasText(user.getFirstName()))
+			user1.setFirstName(user.getFirstName());
+		userRepository.save(user1);
+	}
 }
