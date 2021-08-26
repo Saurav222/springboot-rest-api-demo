@@ -21,11 +21,12 @@ public class UserService implements IUserService {
 	IUserRepository userRepository;
 
 	@Override
-	@Transactional(rollbackFor = Exception.class) //Do rollback for all types of exceptions
+	@Transactional(rollbackFor = Exception.class,
+	noRollbackFor = IllegalStateException.class) //Do rollback for all types of exceptions
 	public void save(User user) throws Exception {
 		userRepository.save(user);
 		logger.debug("saved");
-		throw new Exception();
+		throw new IllegalStateException();
 	}
 
 	@Override
