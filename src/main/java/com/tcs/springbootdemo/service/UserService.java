@@ -6,11 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.tcs.springbootdemo.User;
 import com.tcs.springbootdemo.exceptions.UserNotFoundException;
 import com.tcs.springbootdemo.repository.IUserRepository;
-import org.springframework.util.StringUtils;
 
 @Service
 public class UserService implements IUserService {
@@ -20,9 +21,11 @@ public class UserService implements IUserService {
 	IUserRepository userRepository;
 
 	@Override
-	public void save(User user) {
+	@Transactional(rollbackFor = Exception.class) //Do rollback for all types of exceptions
+	public void save(User user) throws Exception {
 		userRepository.save(user);
 		logger.debug("saved");
+		throw new Exception();
 	}
 
 	@Override

@@ -48,12 +48,16 @@ public class UserController { // spring bean, act as request receiver
 
 	@PostMapping
 	public void saveUser(@RequestBody @Valid User user) {
-		userService.save(user);
+		try {
+			userService.save(user);
+		} catch (Exception e) {
+			logger.error(e.getCause().toString());
+		}
 		logger.debug(user.getFirstName());
 	}
 
 	@PutMapping() // METHOD+Path
-	public void updateUser(@RequestBody User user) {
+	public void updateUser(@RequestBody User user) throws Exception {
 		userService.save(user);
 		logger.debug(user.getFirstName());
 	}
