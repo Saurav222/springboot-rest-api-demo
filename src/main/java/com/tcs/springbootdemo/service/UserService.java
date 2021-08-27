@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.tcs.springbootdemo.User;
 import com.tcs.springbootdemo.exceptions.UserNotFoundException;
@@ -23,9 +22,9 @@ public class UserService implements IUserService {
 	@Override
 	@Transactional(rollbackFor = Exception.class,
 	noRollbackFor = IllegalStateException.class) //Do rollback for all types of exceptions
-	public void save(User user) throws Exception {
+	public void save(User user) {
 		userRepository.save(user);
-		logger.debug("saved");
+		logger.debug("saved"); 
 		throw new IllegalStateException();
 	}
 
@@ -44,16 +43,22 @@ public class UserService implements IUserService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteUser(int id) {
 		userRepository.deleteById(id);
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void update(User user, Integer id) {
 		Optional<User> userFromDB = userRepository.findById(id);
-		User user1 = userFromDB.get();
-		if (StringUtils.hasText(user.getFirstName()))
-			user1.setFirstName(user.getFirstName());
-		userRepository.save(user1);
+		if (userFromDB.isPresent()) {
+			//proceed with merging
+			userFromDB.get().setEmail(user.getEmail());
+		
+//		if (StringUtils.hasText(user.getFirstName()))
+//			user1.setFirstName(user.getFirstName());
+		userRepository.save(userFromDB.get());
+		}
 	}
 }

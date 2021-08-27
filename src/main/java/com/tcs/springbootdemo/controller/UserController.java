@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcs.springbootdemo.User;
@@ -47,18 +48,15 @@ public class UserController { // spring bean, act as request receiver
 	}
 
 	@PostMapping
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public void saveUser(@RequestBody @Valid User user) {
-		try {
-			userService.save(user);
-		} catch (Exception e) {
-			logger.error(e.getCause().toString());
-		}
+		userService.save(user);
 		logger.debug(user.getFirstName());
 	}
 
 	@PutMapping() // METHOD+Path
-	public void updateUser(@RequestBody User user) throws Exception {
-		userService.save(user);
+	public void updateUser(@PathVariable("id") Integer id, @RequestBody User user) throws Exception {
+		userService.update(user,id);
 		logger.debug(user.getFirstName());
 	}
 	
